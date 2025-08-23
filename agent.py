@@ -3,8 +3,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
 from langchain_tavily import TavilySearch
 from langchain.agents import initialize_agent, AgentType
-from discord import send_to_discord
-from youtube import youtube_loader
+from Components.discord import send_to_discord
+from Components.youtube import youtube_loader
 from langchain_core.tools import Tool, tool
 load_dotenv()
 
