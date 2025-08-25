@@ -1,3 +1,4 @@
+import time
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
@@ -7,6 +8,7 @@ from langchain_tavily import TavilySearch
 from langchain.agents import initialize_agent, AgentType
 from Components.discord import send_to_discord
 from Components.youtube import youtube_loader
+from Components.Object_detection import object_detection
 from langchain_core.tools import Tool, tool
 load_dotenv()
 
@@ -26,19 +28,21 @@ Available capabilities:
    - If the user explicitly asks you to send a message to Discord, use the Discord tool.  
    - Confirm with the user before sending sensitive content.
 4. **Object detection**
-    - If the user explicity asks for whats there infront of him, use the Object detector tool.
-    - Describe the detected objects clearly, including positions or counts only if relevant.
+    - If the user asks what's in front of them, what they can see, or asks about objects in view, use the Object detector tool.
+    - Describe the detected objects clearly, including confidence levels if relevant.
+    - The tool captures video for a few seconds to detect objects.
 
 General rules:
 - Always decide the best tool to use based on the user's request.
 - If multiple tools are needed, (e.g., YouTube transcript → detailed notes), orchestrate them step by step. 
 - If the request is outside the capabilities, politely explain your limitations.
 - Ensure responses are professional, consise and actionable.
+- If you are unsure about the user's prompt you can ask again to make it clear, or say you are unclear rather than halucinating.
 """
 
 system_prompt= ChatPromptTemplate.from_messages([
     ("system",system_prompt_template),
-    ("human","{input}")
+    ("user","{input}")
 ])
 
 search_tool= TavilySearch(max_results=1)
@@ -77,6 +81,41 @@ def create_detailed_notes_tool(transcript: str)->str:
     response=llm.invoke([HumanMessage(content=notes_prompt)])
     return response.content
 
+@tool
+def detect_objects_tool(_: str="")->str:
+    """
+    Detects objects in front of the user's webcam using YOLO object detection.
+    Use this when the user asks about what's in front of them, what they can see, or wants to know about objects in their environment.
+    Since you do not have a camera or webcam, the user has so you can use this tool for getting the object details, so that you get an idea of what is there in front of you. The object detection function inside this tool will give you the list.
+    The tool will capture video for a few seconds and return detected objects.
+    """
+    try:
+        print("Starting Object detection")
+        detections=object_detection(duration=2)
+        # print("GOING TO SLEEP FOR 3 SECONDS")
+        # time.sleep(3)
+        if "error" in detections:
+            return f"Error: {detections['error']}"
+        if not detections:
+            return "No objects were found"
+        detected_objects=[]
+        confidence_threshold=0.75
+        for track_id,history in detections.items():
+            for label,conf in history:
+                if conf>confidence_threshold:
+                    detected_objects.append(f"{label}({conf*100:.1f}%)")
+
+        detection_prompt=f"""
+            I detected the following objects from the user's webcam:
+            {detected_objects}
+            Please provide a natural, conversational summary of what's in front of what's infront of the user. Be specific about the objects but keep the responses consises and friendly.
+        """
+
+        response=llm.invoke([HumanMessage(content=detection_prompt)])
+        return response.content
+
+    except Exception as e:
+        return f"Error during object detection {str(e)}"
 
 tools= [
     Tool(
@@ -99,6 +138,11 @@ tools= [
         name="Create_detailed_notes",
         func=create_detailed_notes_tool,
         description="Creates structured, detailed notes from a transcript. Use this after getting a YouTube transcript to format it into organized notes."
+    ),
+    Tool(
+        name='Detect_objects_through_webcam',
+        func=detect_objects_tool,
+        description="Detect objects in front of user through webcam. Use when user asks 'what's in front of me', 'what can you see', or similar questions"
     )
 ]
 # search_result= search_tool.invoke("WHen is the next avengers movie")
@@ -108,9 +152,10 @@ orchestrator_chain= system_prompt | llm | StrOutputParser()
 
 agent= initialize_agent(
     tools=tools,
-    llm=orchestrator_chain,
+    llm=llm,
     agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, # does a reasoning before description
     verbose=True,
+    max_iterations=5,
     handle_parsing_errors=True
 )
 
