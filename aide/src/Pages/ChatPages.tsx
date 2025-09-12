@@ -10,9 +10,9 @@ export default function ChatPage() {
     };
 
     return (
-        <div className="flex flex-col h-screen m-20">
+        <div className="flex flex-col h-screen m-20 overflow-y">
             {/* <SideBar /> */}
-            <div className="flex-1 overflow-y-auto pb-24">
+            <div className="">
                 <Chatwindow messages={messages}/>
             </div>
             <InputBar onSend={addMessage} />
