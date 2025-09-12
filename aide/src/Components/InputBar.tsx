@@ -34,7 +34,7 @@ export default function InputBar({onSend}) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="fixed bottom-0 left-0 w-full p-4 z-10 bg-transparent"
+      className="fixed bottom-0 left-0 w-full p-4 z-10 bg-transparent transform transition duration-300 hover:scale-105 "
     >
       <div className="mx-auto w-full max-w-2xl bg-neutral-800/70 backdrop-blur-md rounded-2xl flex items-end px-4 py-3 shadow-xl">
         <textarea
