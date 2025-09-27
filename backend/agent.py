@@ -147,7 +147,7 @@ tools= [
 ]
 # search_result= search_tool.invoke("WHen is the next avengers movie")
 
-llm= ChatGoogleGenerativeAI(model='gemini-1.5-flash',system_instruction=system_prompt_template)
+llm= ChatGoogleGenerativeAI(model='gemini-2.0-flash',api_version="v1",system_instruction=system_prompt_template)
 orchestrator_chain= system_prompt | llm | StrOutputParser()
 
 agent= initialize_agent(

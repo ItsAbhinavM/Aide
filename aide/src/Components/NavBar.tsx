@@ -1,4 +1,4 @@
-import { LuPaperclip } from "react-icons/lu";
+import { IoChatbubbleOutline } from "react-icons/io5";
 import { TfiSearch } from "react-icons/tfi";
 
 export default function NavBar() {
@@ -6,7 +6,7 @@ export default function NavBar() {
     <div>
       <div className="flex bg-[#202229] w-full p-3 pr-5 pl-5 ">
         <div className="w-1/5 transform transition duration-300 hover:scale-105">
-              <LuPaperclip className="w-6 h-6"/>
+              <IoChatbubbleOutline className="w-6 h-6"/>
         </div>
         <div className="w-3/5 text-center transform transition duration-300 hover:scale-105">
               <p>Aide</p>
