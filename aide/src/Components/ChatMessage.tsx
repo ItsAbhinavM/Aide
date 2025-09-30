@@ -9,7 +9,7 @@ export default function ChatMessage({role,text}:{role, text}){
 
     if (isUser&&count%2==0) {
         return (
-            <div className={`flex w-full mb-2 justify-end `}>
+            <div className={`flex w-full mb-2 justify-end`}>
                 <div className={`max-w-sm w-max px-4 py-2 rounded-lg break-words bg-[#423f3b] text-white-200`}>
                     {String(text)}
                 </div>
@@ -22,7 +22,7 @@ export default function ChatMessage({role,text}:{role, text}){
     }
 
     return (
-        <div className={`flex w-full justify-start`}>
+        <div className={`flex w-full justify-start pb-8 pt-2`}>
             <div className={`prose prose-invert max-w-none whitespace-pre-wrap`}>
                 {String(text)}
             </div>

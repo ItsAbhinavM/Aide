@@ -3,7 +3,10 @@ import Chatwindow from "../Components/Chatwindow"
 import InputBar from "../Components/InputBar"
 
 export default function ChatPage() {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+        const savedMessages=localStorage.getItem('messages');
+        return savedMessages? JSON.parse(savedMessages): []
+    });
     
     const addUserMessage = (text) => {
         setMessages((prev) => [...prev, { role: "user", text }]);
@@ -16,6 +19,7 @@ export default function ChatPage() {
 
     useEffect(() => {
         console.log("Current messages in state:", messages);
+        localStorage.setItem('messages',JSON.stringify(messages));
     }, [messages]);
 
     return (
@@ -29,7 +33,6 @@ export default function ChatPage() {
                 <div className="">
                     <Chatwindow messages={messages} />
                 </div>
-                {/* <InputBar onMessageExchange={handleMessageExchange} /> */}
                 <InputBar addUserMessage={addUserMessage} addAssistantMessage={addAssistantMessage}  />
             </div>
         </div>
