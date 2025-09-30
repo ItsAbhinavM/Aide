@@ -4,21 +4,15 @@ import InputBar from "../Components/InputBar"
 
 export default function ChatPage() {
     const [messages, setMessages] = useState([]);
-
-    const handleMessageExchange = (userMessage, botReply) => {
-        console.log("Adding user message:", userMessage);
-        console.log("Adding bot reply:", botReply);
-        
-        setMessages((prev) => {
-            const newMessages = [
-                ...prev,
-                { role: "user", text: userMessage },
-                { role: "assistant", text: botReply } 
-            ];
-            console.log("New messages state:", newMessages);
-            return newMessages;
-        });
+    
+    const addUserMessage = (text) => {
+        setMessages((prev) => [...prev, { role: "user", text }]);
     };
+
+    const addAssistantMessage = (text) => {
+        setMessages((prev) => [...prev, { role: "assistant", text }]);
+    };
+      
 
     useEffect(() => {
         console.log("Current messages in state:", messages);
@@ -35,7 +29,8 @@ export default function ChatPage() {
                 <div className="">
                     <Chatwindow messages={messages} />
                 </div>
-                <InputBar onMessageExchange={handleMessageExchange} />
+                {/* <InputBar onMessageExchange={handleMessageExchange} /> */}
+                <InputBar addUserMessage={addUserMessage} addAssistantMessage={addAssistantMessage}  />
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { BiSolidSend } from "react-icons/bi";
 
-export default function InputBar({onMessageExchange}) {
+export default function InputBar({addUserMessage,addAssistantMessage}) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,9 +18,10 @@ export default function InputBar({onMessageExchange}) {
 
     try {
         
-        if (onMessageExchange) {
+        if (addUserMessage) {
             console.log("Calling onSend with:", userMessage);
-            onMessageExchange(userMessage);
+            // onMessageExchange(userMessage);
+            addUserMessage(userMessage)
         }
 
         
@@ -41,15 +42,15 @@ export default function InputBar({onMessageExchange}) {
         const data = await result.json();
         console.log("Backend replied:", data.response);
 
-        if (onMessageExchange && data.response) {
+        if (addUserMessage && data.response) {
             console.log("Calling onReply with:", data.response);
-            onMessageExchange(userMessage,data.response);
+            addAssistantMessage(data.response);
         }
 
     } catch (err) {
         console.error("Error occurred while sending the message:", err);
-        if (onMessageExchange) {
-          onMessageExchange(`Error: ${err.message}`);
+        if (addUserMessage) {
+          addUserMessage(`Error: ${err.message}`);
         }
     } finally {
         setLoading(false);
@@ -68,17 +69,6 @@ export default function InputBar({onMessageExchange}) {
       if (buttonRef.current) {
         buttonRef.current.click();
       }
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const prompt=textareaRef.current.value.trim()
-    if (prompt){
-      onMessageExchange(prompt);
-        console.log("Submit clicked with text:", textareaRef.current.value);
-        textareaRef.current.value="";
-        textareaRef.current.style.height="auto";
     }
   };
 
