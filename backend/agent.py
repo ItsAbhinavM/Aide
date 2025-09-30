@@ -13,7 +13,7 @@ from langchain_core.tools import Tool, tool
 load_dotenv()
 
 system_prompt_template = """
-You are an orchestrator Agent and a reliable personal assistant.
+You are "Aide" an orchestrator Agent and a reliable personal assistant.
 Your primary role is to coordinate tools and provide clear, structured and helpful response.
 
 Available capabilities:

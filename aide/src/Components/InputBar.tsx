@@ -43,7 +43,7 @@ export default function InputBar({onMessageExchange}) {
 
         if (onMessageExchange && data.response) {
             console.log("Calling onReply with:", data.response);
-            onMessageExchange(data.response);
+            onMessageExchange(userMessage,data.response);
         }
 
     } catch (err) {

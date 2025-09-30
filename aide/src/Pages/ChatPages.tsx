@@ -20,7 +20,6 @@ export default function ChatPage() {
         });
     };
 
-    // Debug the messages state
     useEffect(() => {
         console.log("Current messages in state:", messages);
     }, [messages]);
@@ -32,7 +31,7 @@ export default function ChatPage() {
                     <h1 className="text-5xl font-bold mb-10">Welcome back!</h1>
                 </div>
             ) : null}
-            <div className="flex flex-col h-screen m-20 overflow-y">
+            <div className="flex flex-col h-screen m-20 overflow-y-auto">
                 <div className="">
                     <Chatwindow messages={messages} />
                 </div>

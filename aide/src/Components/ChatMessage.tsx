@@ -8,8 +8,8 @@ export default function ChatMessage({role,text}:{role, text}){
     }
 
     return (
-        <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-2`}>
-            <div className={`max-w-xs w-max px-4 py-2 rounded-lg ${isUser ? "bg-[#423f3b] text-white" : "bg-gray-200 text-black"}`}>
+        <div className={`flex w-full mb-2 ${isUser ? "justify-end" : "justify-start"} `}>
+            <div className={`max-w-sm w-max px-4 py-2 rounded-lg break-words ${isUser ? "bg-[#423f3b] text-white-200" : "bg-black-300 text-white-100"}`}>
                 {String(text)}
             </div>
         </div>
