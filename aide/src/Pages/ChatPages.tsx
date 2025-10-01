@@ -25,8 +25,8 @@ export default function ChatPage() {
     return (
         <div>
             {messages.length === 0 ? (
-                <div className="h-screen animate-pulse flex items-center justify-center transform transition duration-300 hover:scale-105">
-                    <h1 className="text-5xl font-bold mb-10">Welcome back!</h1>
+                <div className="h-screen flex items-center justify-center transform transition duration-300 hover:scale-105">
+                    <h1 className="text-5xl font-bold animate-pulse mb-10">Welcome back!</h1>
                 </div>
             ) : null}
             <div className="flex flex-col h-screen m-20 overflow-y-auto">
