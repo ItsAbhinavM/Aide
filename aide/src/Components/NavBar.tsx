@@ -1,4 +1,16 @@
+import { useState } from "react";
+
 export default function NavBar() {
+  const [cleared,setCleared] = useState(false);
+
+  const clearChatHistory = (e:any) => {
+      e.preventDefault();
+      localStorage.clear()
+      setCleared(!cleared)
+      window.location.reload();
+      console.log("Chat history cleared");
+  }
+
   return (
     <div className="w-full flex justify-center mt-6">
       <div className="flex items-center justify-between w-[90%] max-w-4xl px-6 py-3 
@@ -11,7 +23,7 @@ export default function NavBar() {
         </div>
 
         <div className="flex space-x-6 text-white">
-          <a href="#" className="hover:text-blue-400 transition text-xl">New Chat + </a>
+          <button className="hover:text-blue-400 transition text-xl" onClick={clearChatHistory}>New Chat + </button>
         </div>
       </div>
     </div>
