@@ -4,27 +4,22 @@ import { GoHome } from "react-icons/go";
 
 export default function NavBar() {
   const [cleared,setCleared] = useState(false);
-  const [isChatEmpty,setIsChatEmtpy] = useState(() => localStorage.length > 0);
+  const [isChatEmpty,setIsChatEmtpy] = useState(() => localStorage.length === 0);
 
   const clearChatHistory = (e:any) => {
       e.preventDefault();
       localStorage.clear()
-      setIsChatEmtpy(false);
+      setIsChatEmtpy(true);
       setCleared(!cleared)
       window.location.reload();
-      window.dispatchEvent(new Event("localStorageUpdated"));
       console.log("Chat history cleared");
   }
 
   useEffect(() => {
-    const sync = () => setIsChatEmtpy(localStorage.length > 0);
-
+    const sync = () => setIsChatEmtpy(localStorage.length === 0);
     window.addEventListener("storage", sync);
-    window.addEventListener("localStorageUpdated", sync);
-
     return () => {
       window.removeEventListener("storage", sync);
-      window.removeEventListener("localStorageUpdated", sync);
     };
   }, []);
 
@@ -39,18 +34,16 @@ export default function NavBar() {
       <div className={`flex items-center justify-between w-[90%] max-w-4xl px-6 py-3 
                       bg-[#202229]/80 backdrop-blur-md border border-white/10
                       rounded-full shadow-lg ${isChatEmpty ? "justify-between" : "justify-center"}`}>
-        
-        <div className="flex items-center space-x-2">
+        <div className={`${isChatEmpty ? "flex-1 flex justify-center items-center space-x-2" : "flex items-center space-x-2"}`} >
           <img className="h-13 w-12 object-contain" src="./src/assets/aideLogo.png" />
           <span className="text-white font-semibold text-2xl">Aide</span>
         </div>
-        { isChatEmpty && (
           <div className="flex space-x-6 text-white">
-            <button className="hover:text-blue-400 transition text-xl" onClick={clearChatHistory}>New Chat + </button>
+            { !isChatEmpty &&  (
+              <button className="hover:text-blue-400 transition text-xl" onClick={clearChatHistory}>New Chat + </button>
+            ) }
             <button className="hover:text-blue-400 transition text-xl" onClick={goBackHome}> <GoHome /> </button>
           </div>
-        )
-        }
       </div>
     </div>
   );
