@@ -35,7 +35,7 @@ export default function NavBar() {
                       bg-[#202229]/80 backdrop-blur-md border border-white/10
                       rounded-full shadow-lg ${isChatEmpty ? "justify-between" : "justify-center"}`}>
         <div className={`${isChatEmpty ? "flex-1 flex justify-center items-center space-x-2" : "flex items-center space-x-2"}`} >
-          <img className="h-13 w-12 object-contain" src="./src/assets/aideLogo.png" />
+          <img className="h-13 w-12 object-contain animate-spin [animation-duration:5s]" src="./src/assets/aideLogo.png" />
           <span className="text-white font-semibold text-2xl">Aide</span>
         </div>
           <div className="flex space-x-6 text-white">

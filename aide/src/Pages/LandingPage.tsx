@@ -8,7 +8,7 @@ export default function LandingPage() {
         console.log("Routed to ChatPage");
     }
     const handleLearnMore = () => {
-        window.__TAURI__.shell.open("https://github.com/itsabhinavm/aide");
+        window.open("https://github.com/ItsAbhinavM/Aide", "_blank");
         console.log("Learn More button clicked")
     }
 
