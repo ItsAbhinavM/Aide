@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aide-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./aide
+      dockerfile: Dockerfile
+    container_name: aide-frontend
+    ports:
+      - "1420:1420"
+    volumes:
+      - ./frontend:/app
+    command: npm run tauri dev

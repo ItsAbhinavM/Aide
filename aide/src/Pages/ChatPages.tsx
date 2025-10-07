@@ -14,7 +14,7 @@ export default function ChatPage() {
 
     const addAssistantMessage = (text) => {
         setMessages((prev) => [...prev, { role: "assistant", text }]);
-        window.location.reload();
+        // window.location.reload();
     };
       
 
